@@ -10,7 +10,7 @@ const Box = ({ children, className }: Props) => {
   return (
     <div
       className={twMerge(
-        `
+      `
         h-fit
         w-full
         rounded-lg

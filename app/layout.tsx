@@ -1,6 +1,11 @@
 import Sidebar from "@/components/Sidebar";
 import "./globals.css";
 import { Figtree } from "next/font/google";
+import SupabaseProvider from "@/providers/SupabaseProvider";
+import UserProvider from "@/providers/UserProvider";
+import ModalProvider from "@/providers/ModalProvider";
+import ToasterProvider from "@/providers/ToasterProvider";
+import getSongsByUserId from "@/actions/getSongsByUser";
 
 const mainFont = Figtree({ subsets: ["latin"] });
 
@@ -8,17 +13,24 @@ export const metadata = {
   title: "Xphix Spotify Clone",
   description: "An awesome clone of spotify",
 };
+export const revalidate = 0;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userSongs = await getSongsByUserId();
   return (
     <html lang="en">
       <body className={mainFont.className}>
-        <Sidebar>Sidebar</Sidebar>
-        {children}
+        <ToasterProvider />
+        <SupabaseProvider>
+          <UserProvider>
+            <ModalProvider />
+            <Sidebar songs={userSongs}>{children}</Sidebar>
+          </UserProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
