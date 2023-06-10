@@ -111,7 +111,7 @@ const UploadModal = (props: Props) => {
   return (
     <Modal
       title="Add a song"
-      description="Upload an mp3 file"
+      description="Upload an mp3/flac file"
       onChange={onChange}
       isOpen={isOpen}
     >
