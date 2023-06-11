@@ -2,6 +2,8 @@
 
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
+import useOnPlay from "@/hooks/useOnPlay";
+import usePlayer from "@/hooks/usePlayer";
 import { Song } from "@/types";
 
 type Props = {
@@ -9,12 +11,14 @@ type Props = {
 };
 
 const SearchContent = ({ songs }: Props) => {
+  const onPlay = useOnPlay(songs);
+
   if (songs.length === 0) {
     return (
       <div
         className=" 
-          w-fumm
           flex
+          w-full
           flex-col
           gap-y-2
           px-6
@@ -38,7 +42,7 @@ const SearchContent = ({ songs }: Props) => {
           "
         >
           <div className="flex-1">
-            <MediaItem onClick={() => {}} data={song} />
+            <MediaItem onClick={(id: string) => onPlay(id)} data={song} />
           </div>
           <LikeButton songId={song.id} />
         </div>
