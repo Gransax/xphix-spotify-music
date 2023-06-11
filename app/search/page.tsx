@@ -4,6 +4,8 @@ import SearchInput from "@/components/SearchInput";
 import React from "react";
 import SearchContent from "./SearchContent";
 
+export const revalidate = 0;
+
 type Props = {
   searchParams: {
     title: string;

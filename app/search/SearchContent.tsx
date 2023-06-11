@@ -1,5 +1,6 @@
 "use client";
 
+import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
 import { Song } from "@/types";
 
@@ -12,12 +13,12 @@ const SearchContent = ({ songs }: Props) => {
     return (
       <div
         className=" 
-            w-fumm
-            flex
-            flex-col
-            gap-y-2
-            px-6
-            text-neutral-400
+          w-fumm
+          flex
+          flex-col
+          gap-y-2
+          px-6
+          text-neutral-400
         "
       >
         No songs found.
@@ -39,7 +40,7 @@ const SearchContent = ({ songs }: Props) => {
           <div className="flex-1">
             <MediaItem onClick={() => {}} data={song} />
           </div>
-          {/* TODO: Add like Button Here */}
+          <LikeButton songId={song.id} />
         </div>
       ))}
     </div>
