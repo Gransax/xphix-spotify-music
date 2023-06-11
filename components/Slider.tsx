@@ -38,10 +38,10 @@ const Slider = ({ value = 1, onChange }: Props) => {
       >
         <RadixSlider.Range
           className="
-          absolute
-          h-full
-          rounded-full
-          bg-white
+            absolute
+            h-full
+            rounded-full
+            bg-white
             "
         />
       </RadixSlider.Track>

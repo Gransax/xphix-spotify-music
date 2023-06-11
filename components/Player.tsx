@@ -22,7 +22,7 @@ const Player = (props: Props) => {
       className="
         fixed
         bottom-0
-        h-[80px]
+        h-[90px]
         w-full
         bg-black
         px-4

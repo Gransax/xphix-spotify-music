@@ -8,6 +8,8 @@ import { HiSpeakerXMark, HiSpeakerWave } from "react-icons/hi2";
 import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
 import useSound from "use-sound";
+import useVolume from "@/hooks/useVolume";
+import PlaySlider from "./PlaySlider";
 
 type Props = {
   song: Song;
@@ -16,8 +18,9 @@ type Props = {
 
 const PlayerContent = ({ song, songUrl }: Props) => {
   const player = usePlayer();
-  const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playTime, setPlayTime] = useState(0);
+  const { volume, setVolume, toggleMute } = useVolume();
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
@@ -49,7 +52,7 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     player.setId(prevSong);
   };
 
-  const [play, { pause, sound }] = useSound(songUrl, {
+  const [play, { pause, sound, duration }] = useSound(songUrl, {
     volume,
     onplay: () => setIsPlaying(true),
     onend: () => {
@@ -78,24 +81,20 @@ const PlayerContent = ({ song, songUrl }: Props) => {
     }
   };
 
-  const toggleMute = () => {
-    if (volume === 0) {
-      setVolume(1);
-    } else {
-      setVolume(0);
-    }
-  };
+  console.log("duration : " , duration)
 
   return (
-    <div className="grid h-full grid-cols-2 md:grid-cols-3">
-      <div className="flex w-full justify-start">
-        <div className="flex items-center gap-x-4">
-          <MediaItem data={song} />
-          <LikeButton songId={song.id} />
+    <div className="group flex flex-col gap-y-1">
+      <PlaySlider duration={duration} isPlaying={isPlaying} />
+      <div className="grid h-full grid-cols-2 md:grid-cols-3">
+        <div className="flex w-full justify-start">
+          <div className="flex items-center gap-x-4">
+            <MediaItem data={song} />
+            <LikeButton songId={song.id} />
+          </div>
         </div>
-      </div>
-      <div
-        className="
+        <div
+          className="
             col-auto
             flex
             w-full
@@ -103,10 +102,10 @@ const PlayerContent = ({ song, songUrl }: Props) => {
             justify-end
             md:hidden
         "
-      >
-        <div
-          onClick={handlePlay}
-          className="
+        >
+          <div
+            onClick={handlePlay}
+            className="
             flex
             h-10
             w-10
@@ -117,12 +116,12 @@ const PlayerContent = ({ song, songUrl }: Props) => {
             bg-white
             p-1
           "
-        >
-          <Icon size={30} className="text-black" />
+          >
+            <Icon size={30} className="text-black" />
+          </div>
         </div>
-      </div>
-      <div
-        className="
+        <div
+          className="
             hidden
             h-full
             w-full
@@ -132,20 +131,20 @@ const PlayerContent = ({ song, songUrl }: Props) => {
             gap-x-6
             md:flex
             "
-      >
-        <AiFillStepBackward
-          onClick={onPlayPrev}
-          size={30}
-          className="
+        >
+          <AiFillStepBackward
+            onClick={onPlayPrev}
+            size={30}
+            className="
             cursor-pointer 
             text-neutral-400
             transition
             hover:text-white
             "
-        />
-        <div
-          onClick={handlePlay}
-          className="
+          />
+          <div
+            onClick={handlePlay}
+            className="
             flex
             h-10
             w-10
@@ -156,29 +155,30 @@ const PlayerContent = ({ song, songUrl }: Props) => {
             bg-white
             p-1
           "
-        >
-          <Icon size={30} className="text-black" />
-        </div>
-        <AiFillStepForward
-          onClick={onPlayNext}
-          size={30}
-          className="
+          >
+            <Icon size={30} className="text-black" />
+          </div>
+          <AiFillStepForward
+            onClick={onPlayNext}
+            size={30}
+            className="
             cursor-pointer 
             text-neutral-400
             transition
             hover:text-white
             "
-        />
-      </div>
-
-      <div className="hidden w-full justify-end pr-2 md:flex">
-        <div className="flex w-[120px] items-center gap-x-2">
-          <VolumeIcon
-            onClick={toggleMute}
-            className="cursor-pointer"
-            size={34}
           />
-          <Slider value={volume} onChange={(value) => setVolume(value)} />
+        </div>
+
+        <div className="hidden w-full justify-end pr-2 md:flex">
+          <div className="flex w-[120px] items-center gap-x-2">
+            <VolumeIcon
+              onClick={toggleMute}
+              className="cursor-pointer"
+              size={34}
+            />
+            <Slider value={volume} onChange={(value) => setVolume(value)} />
+          </div>
         </div>
       </div>
     </div>
