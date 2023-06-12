@@ -68,20 +68,24 @@ const SubscribeModal = ({ products }: Props) => {
   let content = <div className="text-center">No products available</div>;
 
   if (products.length) {
-    content = products.map((product) => {
-      if (!product.prices?.length) {
-        return <div key={product.id}>No prices available</div>;
-      }
+    content = (
+      <div>
+        {products.map((product) => {
+          if (!product.prices?.length) {
+            return <div key={product.id}>No prices available</div>;
+          }
 
-      return product.prices.map((price) => (
-        <Button
-          key={price.id}
-          onClick={() => handleCheckout(price)}
-          disabled={isLoading || price.id === priceIdLoading}
-          className="mb-4"
-        >{`Subscribe for ${formatPrice(price)} a${price.interval}`}</Button>
-      ));
-    });
+          return product.prices.map((price) => (
+            <Button
+              key={price.id}
+              onClick={() => handleCheckout(price)}
+              disabled={isLoading || price.id === priceIdLoading}
+              className="mb-4"
+            >{`Subscribe for ${formatPrice(price)} a${price.interval}`}</Button>
+          ));
+        })}
+      </div>
+    );
   }
 
   if (subscription) {
